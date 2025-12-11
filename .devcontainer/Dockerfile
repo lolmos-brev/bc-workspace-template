@@ -94,10 +94,11 @@ RUN YAZI_VERSION=$(curl -s https://api.github.com/repos/sxyazi/yazi/releases/lat
 
 # ============================================
 # Install Neovim (latest stable)
+# Note: Asset name changed to nvim-linux-x86_64.tar.gz in recent releases
 # ============================================
-RUN curl -fLo /tmp/nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz" \
+RUN curl -fLo /tmp/nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz" \
     && tar -xzf /tmp/nvim.tar.gz -C /opt \
-    && ln -sf /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim \
+    && ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim \
     && rm /tmp/nvim.tar.gz
 
 # ============================================
