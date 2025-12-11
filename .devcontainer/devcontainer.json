@@ -5,8 +5,8 @@
     "context": ".."
   },
 
-  // Set the workspace folder to the cloned repo
-  "workspaceFolder": "/workspaces/beanz-connect",
+  // Set initial workspace to the template (beanz-connect will be opened via postAttachCommand after clone)
+  "workspaceFolder": "/workspaces",
 
   // Machine configuration
   "hostRequirements": {
@@ -95,8 +95,9 @@
   },
 
   // Lifecycle scripts
-  "postCreateCommand": "bash /workspaces/bc-workspace-template/.devcontainer/scripts/post-create.sh",
-  "postStartCommand": "bash /workspaces/bc-workspace-template/.devcontainer/scripts/post-start.sh",
+  // Find and run scripts from whichever workspace contains the .devcontainer
+  "postCreateCommand": "bash $(find /workspaces -maxdepth 4 -name 'post-create.sh' -path '*/.devcontainer/scripts/*' 2>/dev/null | head -1)",
+  "postStartCommand": "bash $(find /workspaces -maxdepth 4 -name 'post-start.sh' -path '*/.devcontainer/scripts/*' 2>/dev/null | head -1)",
 
   // After attach, open the beanz-connect folder
   "postAttachCommand": "if [ -d /workspaces/beanz-connect ]; then code /workspaces/beanz-connect; fi",
