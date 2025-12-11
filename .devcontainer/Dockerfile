@@ -139,8 +139,9 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
 
 # ============================================
 # Install Oh My Zsh
+# Using RUNZSH=no and CHSH=no to prevent interactive prompts
 # ============================================
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+RUN RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended || true
 
 # ============================================
 # Install zsh plugins
