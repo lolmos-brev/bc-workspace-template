@@ -1,0 +1,134 @@
+{
+  "name": "Beanz Connect Dev Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // Set the workspace folder to the cloned repo
+  "workspaceFolder": "/workspaces/beanz-connect",
+
+  // Machine configuration
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+
+  // Features to add (complementary to Dockerfile)
+  "features": {
+    // Claude Code CLI
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
+  },
+
+  // VS Code customizations
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Terminal settings
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
+        "terminal.integrated.fontSize": 14,
+
+        // Editor settings
+        "editor.fontFamily": "JetBrainsMono Nerd Font, 'Courier New', monospace",
+        "editor.fontSize": 14,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+
+        // Git settings
+        "git.autofetch": true,
+        "git.confirmSync": false,
+
+        // Files
+        "files.autoSave": "onFocusChange",
+        "files.trimTrailingWhitespace": true,
+
+        // ESLint
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+
+        // Spell checker
+        "cSpell.words": [
+          "beanz",
+          "breville"
+        ]
+      },
+      "extensions": [
+        // Git tools
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "waderyan.gitblame",
+
+        // GitHub Copilot
+        "github.copilot",
+        "github.copilot-chat",
+
+        // Code quality
+        "usernamehw.errorlens",
+        "streetsidesoftware.code-spell-checker",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+
+        // Node/npm
+        "christian-kohler.npm-intellisense",
+
+        // Productivity
+        "formulahendry.auto-rename-tag",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  },
+
+  // Environment variables
+  "remoteEnv": {
+    "NVM_DIR": "/home/vscode/.nvm",
+    "EDITOR": "nvim",
+    "VISUAL": "code"
+  },
+
+  // Lifecycle scripts
+  "postCreateCommand": "bash /workspaces/bc-workspace-template/.devcontainer/scripts/post-create.sh",
+  "postStartCommand": "bash /workspaces/bc-workspace-template/.devcontainer/scripts/post-start.sh",
+
+  // After attach, open the beanz-connect folder
+  "postAttachCommand": "if [ -d /workspaces/beanz-connect ]; then code /workspaces/beanz-connect; fi",
+
+  // Forward common ports (adjust based on your app)
+  "forwardPorts": [3000, 3001, 4000, 5173, 8080],
+  "portsAttributes": {
+    "3000": {
+      "label": "Client App",
+      "onAutoForward": "notify"
+    },
+    "3001": {
+      "label": "API/Backend",
+      "onAutoForward": "notify"
+    },
+    "4000": {
+      "label": "Lambda Local",
+      "onAutoForward": "notify"
+    }
+  },
+
+  // Run as vscode user
+  "remoteUser": "vscode",
+
+  // Mount settings
+  "mounts": [
+    // Persist zsh history
+    "source=beanz-zsh-history,target=/home/vscode/.zsh_history,type=volume",
+    // Persist nvm
+    "source=beanz-nvm,target=/home/vscode/.nvm,type=volume"
+  ],
+
+  // Wait for these processes to finish before considering container ready
+  "waitFor": "postCreateCommand"
+}
